@@ -119,6 +119,41 @@ namespace AddressBookUsingAdo.Net
             }
         }
 
+        /// <summary>
+        /// Deletes the exi contact in data base.
+        /// </summary>
+        /// <param name="firstName">The first name.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public bool deleteExiContactInDataBase(string firstName)
+        {
+            try
+            {
+                using (this.connection)
+                {
+                    SqlCommand cmd = new SqlCommand("SpAddAddressBookDetailsForDelete", this.connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@FirstName", firstName);
+                    this.connection.Open();
+                    var result = cmd.ExecuteNonQuery();
+                    this.connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }
+
 
