@@ -9,7 +9,7 @@ namespace AddressBookUsingAdo.Net
             AddressBookRepo addressBookRepo = new AddressBookRepo();
             AddressBookModel addressBookModel = new AddressBookModel();
             addressBookModel.FirstName = "Akash";
-            addressBookModel.LastName = "Sangale";
+            addressBookModel.LastName = "hudge";
             addressBookModel.Address = "Tawarja";
             addressBookModel.City = "latur";
             addressBookModel.State = "Maharashtra";
@@ -20,6 +20,8 @@ namespace AddressBookUsingAdo.Net
             addressBookModel.AddressBookType = "Friend";
             addressBookRepo.checkConnection();
             addressBookRepo.addNewContactToDataBase(addressBookModel);
+            addressBookRepo.UpdateExiContactToDataBase(addressBookModel, "dhiraj");
+            addressBookRepo.deleteExiContactInDataBase("Akash");
         }
     }
 }
