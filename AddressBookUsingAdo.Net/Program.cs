@@ -19,8 +19,9 @@ namespace AddressBookUsingAdo.Net
             addressBookModel.AddressBookName = "friend address book";
             addressBookModel.AddressBookType = "Friend";
             addressBookRepo.checkConnection();
-            //addressBookRepo.addNewContactToDataBase(addressBookModel);
+            addressBookRepo.addNewContactToDataBase(addressBookModel);
             addressBookRepo.UpdateExiContactToDataBase(addressBookModel, "dhiraj");
+            addressBookRepo.deleteExiContactInDataBase("Akash");
         }
     }
 }
