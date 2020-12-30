@@ -22,7 +22,8 @@ namespace AddressBookUsingAdo.Net
             //addressBookRepo.addNewContactToDataBase(addressBookModel);
             //addressBookRepo.UpdateExiContactToDataBase(addressBookModel, "dhiraj");
             //addressBookRepo.deleteExiContactInDataBase("Akash");
-            addressBookRepo.personBelongingCityOrState();
+            //addressBookRepo.personBelongingCityOrState();
+            addressBookRepo.CountByCityAndState();
         }
     }
 }
