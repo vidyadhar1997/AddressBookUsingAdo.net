@@ -312,7 +312,7 @@ namespace AddressBookUsingAdo.Net
         /// <param name="addressType"></param>
         /// <param name="adressName"></param>
         /// <returns></returns>
-        public bool identifyAddressBookWithNameAndType(string firstName,string addressType,string adressName)
+        public bool identifyAddressBookWithNameAndType(string firstName, string addressType, string adressName)
         {
             try
             {
@@ -361,9 +361,9 @@ namespace AddressBookUsingAdo.Net
                         using (SqlDataReader sqlDataReader = command.ExecuteReader())
                         {
                             while (sqlDataReader.Read())
-                            { 
+                            {
                                 var count = sqlDataReader.GetInt32(0);
-                                Console.WriteLine("Number of person belonging to adress book type friend = {0}",count);
+                                Console.WriteLine("Number of person belonging to adress book type friend = {0}", count);
                                 Console.WriteLine("\n");
                             }
                             if (sqlDataReader.NextResult())
@@ -377,6 +377,69 @@ namespace AddressBookUsingAdo.Net
                             }
                         }
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Add Person to both friend and family
+        /// </summary>
+        /// <param name="addressBookModel"></param>
+        /// <returns></returns>
+        public bool addPersonToBothFriendAndFamily(AddressBookModel addressBookModel)
+        {
+            try
+            {
+                using (this.connection)
+                {
+                    SqlCommand cmd = new SqlCommand("SpAddAddressBookDetails", this.connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@FirstName", addressBookModel.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", addressBookModel.LastName);
+                    cmd.Parameters.AddWithValue("@Address", addressBookModel.Address);
+                    cmd.Parameters.AddWithValue("@City", addressBookModel.City);
+                    cmd.Parameters.AddWithValue("@State", addressBookModel.State);
+                    cmd.Parameters.AddWithValue("@Zip", addressBookModel.Zip);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", addressBookModel.PhoneNumber);
+                    cmd.Parameters.AddWithValue("@Email", addressBookModel.Email);
+                    cmd.Parameters.AddWithValue("@AddressBookName", addressBookModel.AddressBookName);
+                    cmd.Parameters.AddWithValue("@AddressBookType", addressBookModel.AddressBookType);
+                    this.connection.Open();
+                    var result = cmd.ExecuteNonQuery();
+                    this.connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+
+                    SqlCommand cmd1 = new SqlCommand("SpAddAddressBookDetails", this.connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@FirstName", addressBookModel.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", addressBookModel.LastName);
+                    cmd.Parameters.AddWithValue("@Address", addressBookModel.Address);
+                    cmd.Parameters.AddWithValue("@City", addressBookModel.City);
+                    cmd.Parameters.AddWithValue("@State", addressBookModel.State);
+                    cmd.Parameters.AddWithValue("@Zip", addressBookModel.Zip);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", addressBookModel.PhoneNumber);
+                    cmd.Parameters.AddWithValue("@Email", addressBookModel.Email);
+                    cmd.Parameters.AddWithValue("@AddressBookName", addressBookModel.AddressBookName);
+                    cmd.Parameters.AddWithValue("@AddressBookType", addressBookModel.AddressBookType);
+                    this.connection.Open();
+                    var result1 = cmd.ExecuteNonQuery();
+                    this.connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
             catch (Exception e)
