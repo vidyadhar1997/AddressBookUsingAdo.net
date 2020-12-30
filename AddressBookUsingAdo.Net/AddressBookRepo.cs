@@ -304,6 +304,14 @@ namespace AddressBookUsingAdo.Net
                 this.connection.Close();
             }
         }
+
+        /// <summary>
+        /// Identify AddressBook With Name And Type
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="addressType"></param>
+        /// <param name="adressName"></param>
+        /// <returns></returns>
         public bool identifyAddressBookWithNameAndType(string firstName,string addressType,string adressName)
         {
             try
@@ -323,6 +331,52 @@ namespace AddressBookUsingAdo.Net
                         return true;
                     }
                     return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Get Number Of Person Count By Type
+        /// </summary>
+        public void getNumberOfPersonCountByType()
+        {
+            try
+            {
+                AddressBookModel addressBookModel = new AddressBookModel();
+                using (this.connection)
+                {
+                    using (SqlCommand command = new SqlCommand(
+                        @"select count(address_book_type) as 'number_of_contacts' from Address_Book where address_book_type='Friends';
+                        select count(address_book_type) as 'number_of_contacts' from Address_Book where address_book_type='Family';", connection))
+                    {
+                        this.connection.Open();
+                        using (SqlDataReader sqlDataReader = command.ExecuteReader())
+                        {
+                            while (sqlDataReader.Read())
+                            { 
+                                var count = sqlDataReader.GetInt32(0);
+                                Console.WriteLine("Number of person belonging to adress book type friend = {0}",count);
+                                Console.WriteLine("\n");
+                            }
+                            if (sqlDataReader.NextResult())
+                            {
+                                while (sqlDataReader.Read())
+                                {
+                                    var count = sqlDataReader.GetInt32(0);
+                                    Console.WriteLine("Number of person belonging to adress book type family= {0}", count);
+                                    Console.WriteLine("\n");
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
